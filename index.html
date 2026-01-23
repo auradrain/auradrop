@@ -1,33 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Aura Drop — Work in Progress</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      background: #0b0b0b;
-      color: #eaeaea;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2.5rem;
-    }
-    p {
-      opacity: 0.8;
-      margin-top: 0.5rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>AuraDrop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --text: #eef1f6;
+  --muted: rgba(230,235,245,0.95);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+
+  background: linear-gradient(
+    120deg,
+    #ff3fb5,  /* bright pink */
+    #a14fff,  /* vivid purple */
+    #2afadf,  /* bright teal */
+    #00cfff,  /* vivid blue */
+    #ffd45a   /* warm yellow for contrast */
+  );
+  background-size: 600% 600%;
+  animation: auraShift 16s ease infinite;
+}
+
+@keyframes auraShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Background contrast veil */
+.bg-veil {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.10) 40%,
+    rgba(0,0,0,0.25)
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Container */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: translateY(-8vh);
+}
+
+/* Text */
+h1 {
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 0 10px rgba(0,0,0,0.15);
+}
+
+.tagline {
+  font-size: 1.15rem;
+  color: var(--muted);
+  min-height: 1.6em;
+  transition: opacity 0.6s ease;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+}
+
+/* Droplet */
+.drop-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.drop-glow {
+  width: 32px;
+  height: 46px;
+  animation: auraGlow 2s linear infinite;
+  filter:
+    drop-shadow(0 0 20px #ff66cc)
+    drop-shadow(0 0 40px #a14fff)
+    drop-shadow(0 0 60px #2afadf)
+    drop-shadow(0 0 90px #66f2ff)
+    drop-shadow(0 0 120px #ff33aa);
+}
+
+/* Aurora glow shifting colors */
+@keyframes auraGlow {
+  0% {
+    filter:
+      drop-shadow(0 0 20px #ff66cc)
+      drop-shadow(0 0 40px #a14fff)
+      drop-shadow(0 0 60px #2afadf)
+      drop-shadow(0 0 90px #66f2ff)
+      drop-shadow(0 0 120px #ff33aa);
+  }
+  25% {
+    filter:
+      drop-shadow(0 0 20px #ff33aa)
+      drop-shadow(0 0 40px #ff77ff)
+      drop-shadow(0 0 60px #33e6ff)
+      drop-shadow(0 0 90px #66fff2)
+      drop-shadow(0 0 120px #a14fff);
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 20px #ff99ee)
+      drop-shadow(0 0 40px #a14fff)
+      drop-shadow(0 0 60px #2afadf)
+      drop-shadow(0 0 90px #00d4ff)
+      drop-shadow(0 0 120px #ff33aa);
+  }
+  75% {
+    filter:
+      drop-shadow(0 0 20px #ff66cc)
+      drop-shadow(0 0 40px #a14fff)
+      drop-shadow(0 0 60px #33f2ff)
+      drop-shadow(0 0 90px #66f2ff)
+      drop-shadow(0 0 120px #ff55cc);
+  }
+  100% {
+    filter:
+      drop-shadow(0 0 20px #ff66cc)
+      drop-shadow(0 0 40px #a14fff)
+      drop-shadow(0 0 60px #2afadf)
+      drop-shadow(0 0 90px #66f2ff)
+      drop-shadow(0 0 120px #ff33aa);
+  }
+}
+
+/* Ripples */
+.ripples {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.ripple {
+  position: absolute;
+  width: 18px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.4px solid rgba(255,255,255,0.35);
+  transform: translate(-50%, -50%) scale(0.15);
+  opacity: 0;
+}
+
+.r1 { animation: rippleWave 4s ease-out forwards; }
+.r2 { animation: rippleWave 4s ease-out forwards 0.22s; }
+.r3 { animation: rippleWave 4s ease-out forwards 0.44s; }
+
+@keyframes rippleWave {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.15); }
+  20% { opacity: 0.35; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(80,26); }
+}
+
+/* Footer */
+footer {
+  position: absolute;
+  bottom: 96px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: rgba(235,240,250,0.85);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+</style>
 </head>
+
 <body>
-  <div>
-    <h1>🚧 Aura Drop</h1>
-    <p>Work in progress. Dropping aura soon.</p>
+<div class="bg-veil"></div>
+
+<div class="container" id="container">
+  <div class="drop-wrapper" id="drop">
+    <svg class="drop-glow" viewBox="0 0 72 96">
+      <defs>
+        <radialGradient id="dropGrad" cx="50%" cy="35%" r="80%">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.98)" />
+          <stop offset="100%" stop-color="rgba(255,255,255,0.5)" />
+        </radialGradient>
+      </defs>
+      <path d="M36 0 C36 0 66 36 66 56 C66 78 52 96 36 96 C20 96 6 78 6 56 C6 36 36 0 36 0 Z" fill="url(#dropGrad)" />
+    </svg>
   </div>
+
+  <div class="ripples" id="ripples">
+    <span class="ripple r1"></span>
+    <span class="ripple r2"></span>
+    <span class="ripple r3"></span>
+  </div>
+
+  <h1>AURADROP</h1>
+  <div id="tagline" class="tagline">Drop the aura. Restore the vibe.</div>
+</div>
+
+<footer>✨ dropping soon ✨</footer>
+
+<script>
+/* TAGLINES */
+const taglines = [
+  "Drop the aura. Restore the vibe.",
+  "Some posts didn’t pass the clout check.",
+  "Where vibes get verified.",
+  "Not everything that trends is real.",
+  "Less clout. More credibility.",
+  "Because your feed deserves better.",
+  "Aura dropped. Truth delivered.",
+  "We read the room so you don’t have to.",
+  "Not all engagement is earned.",
+  "Clout detected. Aura rejected.",
+  "Serving truth, not hype."
+];
+
+let taglineIndex = 0;
+const taglineEl = document.getElementById("tagline");
+
+setInterval(() => {
+  taglineEl.style.opacity = 0;
+  setTimeout(() => {
+    taglineIndex = (taglineIndex + 1) % taglines.length;
+    taglineEl.textContent = taglines[taglineIndex];
+    taglineEl.style.opacity = 1;
+  }, 600);
+}, 4200);
+
+/* DROP + RIPPLE ANIMATION */
+const drop = document.getElementById("drop");
+const ripples = document.getElementById("ripples");
+const container = document.getElementById("container");
+
+function animateDrop() {
+  drop.style.transition = "none";
+  drop.style.transform = "translate(-50%, -90px)";
+  drop.style.opacity = "1";
+  drop.offsetHeight;
+
+  drop.style.transition = "transform 1.35s cubic-bezier(.25,.6,.35,1), opacity 0.3s ease";
+  drop.style.transform = "translate(-50%, 150px)";
+
+  setTimeout(() => {
+    const dropRect = drop.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    ripples.style.top = `${dropRect.bottom - containerRect.top}px`;
+    ripples.style.opacity = 1;
+
+    ripples.querySelectorAll(".ripple").forEach(r => {
+      r.style.animation = "none";
+      r.offsetHeight;
+      r.style.animation =
+        r.classList.contains("r1") ? "rippleWave 4s ease-out forwards" :
+        r.classList.contains("r2") ? "rippleWave 4s ease-out forwards 0.22s" :
+        "rippleWave 4s ease-out forwards 0.44s";
+    });
+  }, 1050);
+
+  setTimeout(() => { drop.style.opacity = "0"; }, 1350);
+  setTimeout(() => {
+    ripples.style.opacity = 0;
+    requestAnimationFrame(animateDrop);
+  }, 4000);
+}
+
+requestAnimationFrame(animateDrop);
+</script>
 </body>
 </html>
