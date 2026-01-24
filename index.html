@@ -169,6 +169,9 @@ h1 {
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .qr-wrapper img {
@@ -179,6 +182,15 @@ h1 {
     0 0 24px rgba(255,255,255,0.25),
     0 0 60px rgba(42,250,223,0.35);
   opacity: 0.95;
+}
+
+.qr-caption {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: rgba(235,240,250,0.9);
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.35);
 }
 
 /* Footer */
@@ -223,6 +235,7 @@ footer {
 <!-- QR Code -->
 <div class="qr-wrapper">
   <img src="qr-code.png" alt="AuraDrop QR code">
+  <div class="qr-caption">support the vision ☕ </div>
 </div>
 
 <footer>✨ dropping soon ✨</footer>
