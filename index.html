@@ -30,11 +30,11 @@ body {
 
   background: linear-gradient(
     120deg,
-    #ff3fb5,  /* bright pink */
-    #a14fff,  /* vivid purple */
-    #2afadf,  /* bright teal */
-    #00cfff,  /* vivid blue */
-    #ffd45a   /* warm yellow for contrast */
+    #ff3fb5,
+    #a14fff,
+    #2afadf,
+    #00cfff,
+    #ffd45a
   );
   background-size: 600% 600%;
   animation: auraShift 16s ease infinite;
@@ -80,15 +80,19 @@ h1 {
   letter-spacing: 0.18em;
   font-weight: 600;
   margin-bottom: 6px;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 0 10px rgba(0,0,0,0.15);
+  text-shadow:
+    0 1px 4px rgba(0,0,0,0.5),
+    0 0 10px rgba(0,0,0,0.15);
 }
 
 .tagline {
   font-size: 1.15rem;
   color: var(--muted);
   min-height: 1.6em;
-  transition: opacity 0.6s ease;
+  opacity: 1;
+  transition: opacity 0.4s ease;
   text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+  will-change: opacity;
 }
 
 /* Droplet */
@@ -110,7 +114,6 @@ h1 {
     drop-shadow(0 0 120px #ff33aa);
 }
 
-/* Aurora glow shifting colors */
 @keyframes auraGlow {
   0% {
     filter:
@@ -120,29 +123,13 @@ h1 {
       drop-shadow(0 0 90px #66f2ff)
       drop-shadow(0 0 120px #ff33aa);
   }
-  25% {
-    filter:
-      drop-shadow(0 0 20px #ff33aa)
-      drop-shadow(0 0 40px #ff77ff)
-      drop-shadow(0 0 60px #33e6ff)
-      drop-shadow(0 0 90px #66fff2)
-      drop-shadow(0 0 120px #a14fff);
-  }
   50% {
     filter:
-      drop-shadow(0 0 20px #ff99ee)
-      drop-shadow(0 0 40px #a14fff)
-      drop-shadow(0 0 60px #2afadf)
-      drop-shadow(0 0 90px #00d4ff)
-      drop-shadow(0 0 120px #ff33aa);
-  }
-  75% {
-    filter:
-      drop-shadow(0 0 20px #ff66cc)
-      drop-shadow(0 0 40px #a14fff)
-      drop-shadow(0 0 60px #33f2ff)
-      drop-shadow(0 0 90px #66f2ff)
-      drop-shadow(0 0 120px #ff55cc);
+      drop-shadow(0 0 22px #ff99ee)
+      drop-shadow(0 0 44px #a14fff)
+      drop-shadow(0 0 66px #2afadf)
+      drop-shadow(0 0 100px #00d4ff)
+      drop-shadow(0 0 140px #ff55cc);
   }
   100% {
     filter:
@@ -186,11 +173,19 @@ h1 {
 /* Footer */
 footer {
   position: absolute;
-  bottom: 96px;
+  bottom: 9vh;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: rgba(235,240,250,0.85);
   text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+/* 🔮 Buy Me a Coffee — force center placement */
+#bmc-wbtn {
+  left: 50% !important;
+  right: auto !important;
+  bottom: 15vh !important; /* sits above footer */
+  transform: translateX(-50%) !important;
 }
 </style>
 </head>
@@ -207,7 +202,8 @@ footer {
           <stop offset="100%" stop-color="rgba(255,255,255,0.5)" />
         </radialGradient>
       </defs>
-      <path d="M36 0 C36 0 66 36 66 56 C66 78 52 96 36 96 C20 96 6 78 6 56 C6 36 36 0 36 0 Z" fill="url(#dropGrad)" />
+      <path d="M36 0 C36 0 66 36 66 56 C66 78 52 96 36 96 C20 96 6 78 6 56 C6 36 36 0 36 0 Z"
+            fill="url(#dropGrad)" />
     </svg>
   </div>
 
@@ -220,6 +216,20 @@ footer {
   <h1>AURADROP</h1>
   <div id="tagline" class="tagline">Drop the aura. Restore the vibe.</div>
 </div>
+
+<!-- Buy Me a Coffee widget -->
+<script
+  data-name="BMC-Widget"
+  data-cfasync="false"
+  src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+  data-id="auradrop"
+  data-description="Support me on Buy me a coffee!"
+  data-message=""
+  data-color="#26B0A1"
+  data-position="Right"
+  data-x_margin="18"
+  data-y_margin="18">
+</script>
 
 <footer>✨ dropping soon ✨</footer>
 
@@ -242,16 +252,19 @@ const taglines = [
 let taglineIndex = 0;
 const taglineEl = document.getElementById("tagline");
 
-setInterval(() => {
-  taglineEl.style.opacity = 0;
+function cycleTagline() {
+  taglineEl.style.opacity = "0";
   setTimeout(() => {
     taglineIndex = (taglineIndex + 1) % taglines.length;
     taglineEl.textContent = taglines[taglineIndex];
-    taglineEl.style.opacity = 1;
-  }, 600);
-}, 4200);
+    taglineEl.offsetHeight;
+    taglineEl.style.opacity = "1";
+  }, 450);
+}
 
-/* DROP + RIPPLE ANIMATION */
+setInterval(cycleTagline, 4200);
+
+/* DROP + RIPPLE */
 const drop = document.getElementById("drop");
 const ripples = document.getElementById("ripples");
 const container = document.getElementById("container");
@@ -262,7 +275,8 @@ function animateDrop() {
   drop.style.opacity = "1";
   drop.offsetHeight;
 
-  drop.style.transition = "transform 1.35s cubic-bezier(.25,.6,.35,1), opacity 0.3s ease";
+  drop.style.transition =
+    "transform 1.35s cubic-bezier(.25,.6,.35,1), opacity 0.3s ease";
   drop.style.transform = "translate(-50%, 150px)";
 
   setTimeout(() => {
