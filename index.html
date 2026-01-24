@@ -71,7 +71,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  transform: translateY(-8vh);
+  transform: translateY(-16vh);
 }
 
 /* Text */
@@ -115,7 +115,7 @@ h1 {
 }
 
 @keyframes auraGlow {
-  0% {
+  0%, 100% {
     filter:
       drop-shadow(0 0 20px #ff66cc)
       drop-shadow(0 0 40px #a14fff)
@@ -130,14 +130,6 @@ h1 {
       drop-shadow(0 0 66px #2afadf)
       drop-shadow(0 0 100px #00d4ff)
       drop-shadow(0 0 140px #ff55cc);
-  }
-  100% {
-    filter:
-      drop-shadow(0 0 20px #ff66cc)
-      drop-shadow(0 0 40px #a14fff)
-      drop-shadow(0 0 60px #2afadf)
-      drop-shadow(0 0 90px #66f2ff)
-      drop-shadow(0 0 120px #ff33aa);
   }
 }
 
@@ -170,22 +162,33 @@ h1 {
   100% { opacity: 0; transform: translate(-50%, -50%) scale(80,26); }
 }
 
+/* QR Code */
+.qr-wrapper {
+  position: absolute;
+  bottom: 20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.qr-wrapper img {
+  width: 96px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow:
+    0 0 24px rgba(255,255,255,0.25),
+    0 0 60px rgba(42,250,223,0.35);
+  opacity: 0.95;
+}
+
 /* Footer */
 footer {
   position: absolute;
-  bottom: 9vh;
+  bottom: 12vh;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: rgba(235,240,250,0.85);
   text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-}
-
-/* 🔮 Buy Me a Coffee — force center placement */
-#bmc-wbtn {
-  left: 50% !important;
-  right: auto !important;
-  bottom: 15vh !important; /* sits above footer */
-  transform: translateX(-50%) !important;
 }
 </style>
 </head>
@@ -217,7 +220,14 @@ footer {
   <div id="tagline" class="tagline">Drop the aura. Restore the vibe.</div>
 </div>
 
-<!-- Buy Me a Coffee widget -->
+<!-- QR Code -->
+<div class="qr-wrapper">
+  <img src="qr-code.png" alt="AuraDrop QR code">
+</div>
+
+<footer>✨ dropping soon ✨</footer>
+
+<!-- Buy Me a Coffee Widget (bottom right) -->
 <script
   data-name="BMC-Widget"
   data-cfasync="false"
@@ -230,8 +240,6 @@ footer {
   data-x_margin="18"
   data-y_margin="18">
 </script>
-
-<footer>✨ dropping soon ✨</footer>
 
 <script>
 /* TAGLINES */
