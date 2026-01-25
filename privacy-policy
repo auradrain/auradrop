@@ -1,0 +1,23 @@
+AuraDrop Privacy Policy
+
+AuraDrop is a Chrome extension that adds playful context labels to publicly visible LinkedIn feed posts. 
+
+Data Collection
+- AuraDrop only reads text from publicly visible posts in your LinkedIn feed.
+- No private messages, profile data, or personal identifiers are collected.
+- No personally identifiable information (PII), health, financial, authentication, location, or browsing data is collected.
+
+Data Usage
+- Text is sent to a remote service to generate a context label and brief explanation.
+- The remote service does not store or reuse your post text.
+- Labels are cached locally in your browser for efficiency; the cache stores only a hash and the label, not the original post.
+
+Permissions
+- Storage: used for local caching only.
+- Host permissions: used to read publicly visible LinkedIn posts and communicate with the backend service.
+
+No Advertising, Tracking, or Sharing
+- AuraDrop does not track your activity, show ads, or share data with third parties.
+
+Contact
+For questions, contact: [your email/contact link]
