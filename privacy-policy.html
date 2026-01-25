@@ -1,23 +1,127 @@
-AuraDrop Privacy Policy
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AuraDrop Privacy Policy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-AuraDrop is a Chrome extension that adds playful context labels to publicly visible LinkedIn feed posts. 
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-Data Collection
-- AuraDrop only reads text from publicly visible posts in your LinkedIn feed.
-- No private messages, profile data, or personal identifiers are collected.
-- No personally identifiable information (PII), health, financial, authentication, location, or browsing data is collected.
+<style>
+:root {
+  --bg-gradient: linear-gradient(120deg, #ff3fb5, #a14fff, #2afadf, #00cfff, #ffd45a);
+  --text-color: #eef1f6;
+  --muted-color: rgba(230,235,245,0.95);
+  --card-bg: rgba(0,0,0,0.45);
+}
 
-Data Usage
-- Text is sent to a remote service to generate a context label and brief explanation.
-- The remote service does not store or reuse your post text.
-- Labels are cached locally in your browser for efficiency; the cache stores only a hash and the label, not the original post.
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-color);
+  background: var(--bg-gradient);
+  background-size: 600% 600%;
+  animation: auraShift 16s ease infinite;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
 
-Permissions
-- Storage: used for local caching only.
-- Host permissions: used to read publicly visible LinkedIn posts and communicate with the backend service.
+@keyframes auraShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-No Advertising, Tracking, or Sharing
-- AuraDrop does not track your activity, show ads, or share data with third parties.
+.container {
+  max-width: 800px;
+  background: var(--card-bg);
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+}
 
-Contact
-For questions, contact: [your email/contact link]
+h1 {
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--muted-color);
+}
+
+p, li {
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+ul {
+  margin-left: 1.2rem;
+}
+
+a {
+  color: #00f2ff;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #ffd45a;
+}
+
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--muted-color);
+}
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>AuraDrop Privacy Policy</h1>
+
+    <p>AuraDrop is a Chrome extension that adds playful context labels to publicly visible LinkedIn feed posts.</p>
+
+    <h2>Data Collection</h2>
+    <ul>
+      <li>AuraDrop only reads text from publicly visible posts in your LinkedIn feed.</li>
+      <li>No private messages, profile data, or personal identifiers are collected.</li>
+      <li>No personally identifiable information (PII), health, financial, authentication, location, or browsing data is collected.</li>
+    </ul>
+
+    <h2>Data Usage</h2>
+    <ul>
+      <li>Text is sent to a remote service to generate a context label and brief explanation.</li>
+      <li>The remote service does not store or reuse your post text.</li>
+      <li>Labels are cached locally in your browser for efficiency; the cache stores only a hash and the label, not the original post.</li>
+    </ul>
+
+    <h2>Permissions</h2>
+    <ul>
+      <li><strong>Storage:</strong> used for local caching only.</li>
+      <li><strong>Host permissions:</strong> used to read publicly visible LinkedIn posts and communicate with the backend service.</li>
+    </ul>
+
+    <h2>No Advertising, Tracking, or Sharing</h2>
+    <p>AuraDrop does not track your activity, show ads, or share data with third parties.</p>
+
+    <h2>Contact</h2>
+    <p>For questions, contact: <a href="mailto:auradrain1@gmail.com">auradrain1@gmail.com</a></p>
+
+    <footer>✨ AuraDrop • Your privacy is sacred ✨</footer>
+  </div>
+</body>
+</html>
