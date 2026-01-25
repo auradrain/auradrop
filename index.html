@@ -202,6 +202,29 @@ footer {
   color: rgba(235,240,250,0.85);
   text-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
+
+/* Privacy Policy Button */
+.privacy-btn {
+  position: fixed;
+  bottom: 18px;
+  right: 120px; /* Adjusted to not overlap Buy Me a Coffee */
+  background: rgba(255,255,255,0.15);
+  color: var(--text);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+  transition: background 0.3s ease, transform 0.2s ease;
+  z-index: 3;
+}
+
+.privacy-btn:hover {
+  background: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+}
 </style>
 </head>
 
@@ -239,6 +262,9 @@ footer {
 </div>
 
 <footer>✨ dropping soon ✨</footer>
+
+<!-- Privacy Policy Button -->
+<a href="privacy-policy.html" class="privacy-btn" target="_blank">Privacy Policy</a>
 
 <!-- Buy Me a Coffee Widget (bottom right) -->
 <script
