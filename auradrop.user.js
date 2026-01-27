@@ -2,6 +2,7 @@
 // @name         AuraDrop (TM)
 // @namespace    http://tampermonkey.net/
 // @version      1.0.0
+// @author       AuraDrop - https://auradrop.live/
 // @downloadURL https://raw.githubusercontent.com/auradrain/auradrop/main/auradrop.user.js
 // @updateURL   https://raw.githubusercontent.com/auradrain/auradrop/main/auradrop.user.js
 // @description  Drop the Aura, restore the vibe
@@ -308,8 +309,8 @@ const DONE_KEY = "auradropDoneV7";
               font-weight:850 !important;
               letter-spacing:0.2px !important;
               text-decoration:none !important;
-              border:1px solid rgba(255, 210, 64, 0.34) !important;
-              color: rgba(255, 241, 200, 0.98) !important;
+              border:4px solid rgba(255, 210, 64, 0.34) !important;
+              color: #FFD240 !important;
               background: rgba(255, 210, 64, 0.18) !important;
               box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 26px rgba(0,0,0,0.18) !important;
               white-space:nowrap !important;
