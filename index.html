@@ -1,355 +1,1549 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>AuraDrop</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AuraDrop</title>
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <!-- Font: Funnel Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
-<style>
-:root {
-  --text: #eef1f6;
-  --muted: rgba(230,235,245,0.95);
-}
+    <style>
+      :root {
+        --bg: rgba(24, 30, 46, 0.9);
+        --panel: rgba(255, 255, 255, 0.075);
 
-* {
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-}
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.72);
+        --muted-2: rgba(255, 255, 255, 0.58);
+        --muted-3: rgba(255, 255, 255, 0.46);
+        --border: rgba(255, 255, 255, 0.12);
 
-body {
-  margin: 0;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+        --header-h: 72px;
+        --footer-h: 58px;
+
+        --mustard: #e6c84a; /* mustard, not too vibrant */
+        --mustard-text: #151515;
+
+        --radius-lg: 18px;
+
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+        --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.35);
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; overflow-x: hidden; }
+
+      body {
+margin: 0;
+        font-family: "Funnel Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        color: var(--text);
+          margin: 0;
+  font-family: "Funnel Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
-
-  background: linear-gradient(
-    120deg,
-    #ff3fb5,
-    #a14fff,
-    #2afadf,
-    #00cfff,
-    #ffd45a
-  );
-  background-size: 600% 600%;
-  animation: auraShift 16s ease infinite;
+  background: var(--bg);
+  overflow-x: hidden;
 }
 
-@keyframes auraShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
 
-/* Background contrast veil */
-.bg-veil {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.25),
-    rgba(0,0,0,0.10) 40%,
-    rgba(0,0,0,0.25)
-  );
-  pointer-events: none;
-  z-index: 0;
-}
+      
 
-/* Container */
-.container {
+      /* =========================
+         Aurora (Northern Lights) live background
+         ========================= */
+      body::before{
+        content:"";
+        position: fixed;
+        inset: -20%;
+        z-index: -1;
+        pointer-events: none;
+
+        /* Multi-layer aurora */
+        background:
+          radial-gradient(900px 520px at 20% 20%, rgba(0, 255, 200, 0.36), transparent 62%),
+          radial-gradient(760px 480px at 78% 28%, rgba(140, 120, 255, 0.34), transparent 64%),
+          radial-gradient(860px 560px at 55% 80%, rgba(255, 120, 200, 0.26), transparent 66%),
+          radial-gradient(680px 520px at 18% 78%, rgba(90, 210, 255, 0.30), transparent 62%),
+          conic-gradient(from 210deg at 50% 50%,
+            rgba(0, 255, 200, 0.16),
+            rgba(120, 160, 255, 0.18),
+            rgba(255, 120, 200, 0.16),
+            rgba(90, 210, 255, 0.16),
+            rgba(0, 255, 200, 0.16)
+          );
+
+        filter: blur(36px) saturate(1.6) brightness(1.12);
+        opacity: 1;
+
+        transform: translate3d(0,0,0) scale(1.05);
+        animation: auroraDrift 16s ease-in-out infinite alternate,
+                   auroraHue 18s linear infinite;
+        will-change: transform, filter;
+      }
+
+      /* subtle grain so it feels "alive" */
+      body::after{
+        content:"";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image:
+          radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05), transparent 55%),
+          radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04), transparent 60%),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+        mix-blend-mode: overlay;
+        opacity: 0.6;
+        filter: blur(0.2px);
+      }
+
+      @keyframes auroraDrift{
+        0%   { transform: translate3d(-3%, -2%, 0) scale(1.05) rotate(0.5deg); }
+        50%  { transform: translate3d(2%, 3%, 0) scale(1.10) rotate(-0.8deg); }
+        100% { transform: translate3d(4%, -1%, 0) scale(1.07) rotate(0.3deg); }
+      }
+
+      @keyframes auroraHue{
+        0%   { filter: blur(38px) saturate(1.35) brightness(1.12) hue-rotate(0deg); }
+        100% { filter: blur(38px) saturate(1.35) brightness(1.12) hue-rotate(360deg); }
+      }
+
+
+      a { color: inherit; text-decoration: none; }
+
+      /* =========================
+         Header
+         ========================= */
+      header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: var(--header-h);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(18, 22, 40, 0.6);
+border-bottom: 1px solid var(--border);
+      }
+
+      .header-inner {
+        width: min(1320px, calc(100% - 56px));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brandline {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 8px;
+        line-height: 1;
+        user-select: none;
+      }
+
+      .brandline .brand-main {
+        font-size: 18px;
+        font-weight: 900;
+        letter-spacing: 0.2px;
+      }
+
+      .brandline .brand-sub {
+        font-size: 15px;
+        font-weight: 300;
+        font-style: italic;
+        letter-spacing: 0.1px;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .header-actions { display: flex; align-items: center; gap: 10px; }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.35);
+        background: var(--mustard);
+        color: var(--mustard-text);
+        font-weight: 850;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        box-shadow: 0 10px 24px rgba(230, 200, 74, 0.18);
+        transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease, background 220ms ease;
+        white-space: nowrap;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.02);
+        box-shadow: 0 14px 28px rgba(230, 200, 74, 0.22);
+      }
+
+      .btn:active { transform: translateY(0px) scale(0.99); }
+
+      .btn.secondary {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid var(--border);
+        color: var(--text);
+        box-shadow: none;
+      }
+
+      .btn.secondary:hover { background: rgba(255, 255, 255, 0.09); }
+
+      /* Header BMC: cursive */
+      .btn.bmc {
+        font-style: italic;
+        font-weight: 800;
+        letter-spacing: 0.1px;
+      }
+
+      /* =========================
+         Layout
+         ========================= */
+      main {
+        padding-top: calc(var(--header-h) + 18px); /* rotating text a bit closer to header */
+        padding-bottom: calc(var(--footer-h) + 118px); /* more room above footer */
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        width: min(1320px, calc(100% - 56px));
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      /* Rotating text (no box) */
+      .rotator { text-align: center; padding: 2px 0 4px; }
+
+      .rotator .line {
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 400; /* not bold */
+        color: rgba(255, 255, 255, 0.46);
+        letter-spacing: 0.12px;
+
+        opacity: 0;
+        transform: translateY(8px);
+        filter: blur(2px);
+        transition: opacity 520ms ease, transform 520ms ease, filter 520ms ease;
+        will-change: opacity, transform, filter;
+      }
+
+      .rotator .line.show {
+        opacity: 1;
+        transform: translateY(0px);
+        filter: blur(0px);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 56px; /* more horizontal gap */
+        align-items: start;
+      }
+
+      @media (max-width: 980px) {
+        .header-inner, .container { width: min(920px, calc(100% - 32px)); }
+        .grid { grid-template-columns: 1fr; gap: 18px; }
+      }
+
+      .panel {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .panel-inner { padding: 20px; }
+
+      /* =========================
+         Left section
+         ========================= */
+      .hero-title {
+        font-size: 14px;
+        letter-spacing: 0.18em;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.62);
+        margin: 0 0 10px;
+      }
+
+      .headline {
+        margin: 0 0 12px;
+        font-size: 28px;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+      }
+
+      .desc {
+        margin: 0 0 14px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.62;
+      }
+
+      .note {
+        margin: 0;
+        color: var(--muted-2);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 18px 0;
+      }
+
+      .install {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .install p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .install-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      @keyframes liveRainbow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .btn.install-btn {
+        background: rgba(64, 220, 165, 0.88);
+        color: #07110d;
+        border: 1px solid rgba(0, 0, 0, 0.35);
+        box-shadow: 0 14px 30px rgba(64, 220, 165, 0.16);
+      }
+
+      .btn.install-btn:hover {
+        /* live (animated) rainbow hover */
+        background: linear-gradient(
+          90deg,
+          rgba(255, 107, 107, 0.96),
+          rgba(255, 217, 61, 0.96),
+          rgba(107, 255, 179, 0.96),
+          rgba(107, 215, 255, 0.96),
+          rgba(179, 107, 255, 0.96),
+          rgba(255, 107, 107, 0.96)
+        );
+        background-size: 300% 300%;
+        animation: liveRainbow 1.6s ease-in-out infinite;
+        color: rgba(0, 0, 0, 0.88);
+        filter: saturate(1.12);
+        box-shadow:
+          0 18px 34px rgba(0, 0, 0, 0.35),
+          0 0 30px rgba(179, 107, 255, 0.20);
+      }
+
+      .small-muted {
+        font-size: 12px;
+        color: var(--muted-3);
+      }
+
+      /* =========================
+         Right section (mock feed)
+         ========================= */
+      .feed-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .feed-header .title {
+        font-weight: 900;
+        letter-spacing: -0.01em;
+      }
+
+      .feed-header .sub {
+        font-size: 12px;
+        color: var(--muted-3);
+      }
+
+      .feed-viewport {
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 124px; /* more bottom gap inside container */
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.12));
+      }
+
+      .feed-track {
+        position: absolute;
+        left: 0; right: 0; top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px 14px 82px; /* extra space at the bottom */
+        animation: scrollY 24s linear infinite;
+      }
+
+      .feed-viewport:hover .feed-track { animation-play-state: paused; }
+
+      @keyframes scrollY {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-50%); }
+      }
+
+      .post {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: var(--radius-lg);
+        padding: 14px;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .post-top {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        flex: 0 0 44px;
+        background:
+          radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)),
+          rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+      }
+
+      .post-body { flex: 1; min-width: 0; }
+
+      .name-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .name {
+        margin: 0;
+        font-weight: 900;
+        letter-spacing: -0.01em;
+        font-size: 14px;
+      }
+
+      .meta {
+        font-size: 12px;
+        color: var(--muted-3);
+        white-space: nowrap;
+      }
+
+      .tag-row { margin-top: 8px; display: flex; align-items: center; gap: 10px; }
+
+      .tag {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.15px;
+        overflow: visible; /* prevent tooltip clipping */
+
+        color: rgba(255, 255, 255, 0.92);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 107, 107, 0.28),
+          rgba(255, 217, 61, 0.22),
+          rgba(107, 255, 179, 0.20),
+          rgba(107, 215, 255, 0.22),
+          rgba(179, 107, 255, 0.24)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow:
+          0 10px 18px rgba(0, 0, 0, 0.30),
+          0 0 18px rgba(179, 107, 255, 0.10);
+        backdrop-filter: blur(8px);
+        cursor: default;
+        user-select: none;
+        white-space: nowrap;
+      }
+
+      .tag .tooltip{
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 10px);
+        transform: translateX(-50%) translateY(6px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 160ms ease, transform 160ms ease;
+
+        width: 260px;
+        max-width: 260px;
+        padding: 10px 12px;
+        border-radius: 12px;
+
+        background: #0e1118; /* FULLY OPAQUE */
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.65);
+        z-index: 10;
+
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.35;
+        white-space: normal;
+        word-break: break-word;
+
+        background-image:
+          linear-gradient(90deg,
+            rgba(255,107,107,1),
+            rgba(255,217,61,1),
+            rgba(107,255,179,1),
+            rgba(107,215,255,1),
+            rgba(179,107,255,1)
+          );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .tag .tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 8px;
+        border-style: solid;
+        border-color: rgba(10, 10, 12, 0.94) transparent transparent transparent;
+      }
+
+      .tag:hover .tooltip {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .content {
+        margin: 10px 0 10px;
+        font-size: 14px;
+        line-height: 1.58;
+        color: var(--muted);
+      }
+
+      .engagement {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--muted-3);
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.10);
+      }
+
+      .counts { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+      .count-chip { display: inline-flex; align-items: center; gap: 6px; }
+
+      .actions { display: inline-flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+      .action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--muted-2);
+      }
+
+      .ico { width: 14px; height: 14px; display: inline-block; opacity: 0.9; }
+      .action:hover { background: rgba(255, 255, 255, 0.05); }
+
+      /* =========================
+         Footer
+         ========================= */
+      footer {
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        height: var(--footer-h);
+        z-index: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(18, 22, 40, 0.6);
+border-top: 1px solid var(--border);
+      }
+
+      .footer-inner {
+        width: min(1320px, calc(100% - 56px));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .footer-left {
+        color: var(--muted-3);
+        font-size: 12.5px;
+        line-height: 1.35;
+      }
+
+      .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding-right: 18px; /* nudges button a bit left */
+      }
+
+      /* Privacy policy: no border */
+      .btn.privacy {
+        border: none;
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.88);
+        box-shadow: none;
+      }
+
+      .btn.privacy:hover {
+        background: rgba(255, 255, 255, 0.09);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+      }
+
+      @media (max-width: 520px) {
+        .feed-viewport { height: 480px; }
+        .footer-left { font-size: 12px; }
+      }
+    
+/* Header BMC: hover swaps to coffee-only */
+.btn.bmc{
   position: relative;
-  z-index: 1;
-  width: 100%;
+  overflow: hidden;
+}
+
+/* emoji layer (explicit color so it doesn't inherit transparent) */
+.btn.bmc::after{
+  content:"☕ cheers!";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  font-size:18px;
+  font-weight:700;
+  color:#4a3a1a; /* coffee-brown text */
+
+  opacity:0;
+  transform: scale(0.92);
+  transition: opacity 140ms ease, transform 140ms ease;
+  pointer-events:none;
+  z-index:2;
+}
+
+/* hover state */
+.btn.bmc:hover{
+  background:#f1e3c1 !important; /* light brown / latte */
+  border-color: rgba(0,0,0,0.12) !important;
+  color: transparent !important; /* hide original text */
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+}
+
+.btn.bmc:hover::after{
+  opacity:1;
+  transform: scale(1.05);
+}
+
+
+
+/* Slightly larger One Click Install button */
+.btn.install-btn {
+  padding: 14px 22px;
+  font-size: 15.5px;
+}
+
+
+/* Ensure right feed matches left panel height */
+.grid {
+  align-items: stretch;
+}
+.grid > .panel.right-span {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transform: translateY(-16vh);
 }
 
-/* Text */
-h1 {
-  font-family: 'Poppins', sans-serif;
-  letter-spacing: 0.18em;
-  font-weight: 600;
-  margin-bottom: 6px;
-  text-shadow:
-    0 1px 4px rgba(0,0,0,0.5),
-    0 0 10px rgba(0,0,0,0.15);
+/* Nudge both left and right containers down equally */
+.grid {
+  margin-top: 20px;
 }
 
-.tagline {
-  font-size: 1.15rem;
-  color: var(--muted);
-  min-height: 1.6em;
-  opacity: 1;
-  transition: opacity 0.4s ease;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.35);
-  will-change: opacity;
-}
 
-/* Droplet */
-.drop-wrapper {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.drop-glow {
+/* Brand icon in header */
+.brand-icon{
   width: 32px;
-  height: 46px;
-  animation: auraGlow 2s linear infinite;
-  filter:
-    drop-shadow(0 0 20px #ff66cc)
-    drop-shadow(0 0 40px #a14fff)
-    drop-shadow(0 0 60px #2afadf)
-    drop-shadow(0 0 90px #66f2ff)
-    drop-shadow(0 0 120px #ff33aa);
-}
-
-@keyframes auraGlow {
-  0%, 100% {
-    filter:
-      drop-shadow(0 0 20px #ff66cc)
-      drop-shadow(0 0 40px #a14fff)
-      drop-shadow(0 0 60px #2afadf)
-      drop-shadow(0 0 90px #66f2ff)
-      drop-shadow(0 0 120px #ff33aa);
-  }
-  50% {
-    filter:
-      drop-shadow(0 0 22px #ff99ee)
-      drop-shadow(0 0 44px #a14fff)
-      drop-shadow(0 0 66px #2afadf)
-      drop-shadow(0 0 100px #00d4ff)
-      drop-shadow(0 0 140px #ff55cc);
-  }
-}
-
-/* Ripples */
-.ripples {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-  opacity: 0;
-}
-
-.ripple {
-  position: absolute;
-  width: 18px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1.4px solid rgba(255,255,255,0.35);
-  transform: translate(-50%, -50%) scale(0.15);
-  opacity: 0;
-}
-
-.r1 { animation: rippleWave 4s ease-out forwards; }
-.r2 { animation: rippleWave 4s ease-out forwards 0.22s; }
-.r3 { animation: rippleWave 4s ease-out forwards 0.44s; }
-
-@keyframes rippleWave {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.15); }
-  20% { opacity: 0.35; }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(80,26); }
-}
-
-/* QR Code */
-.qr-wrapper {
-  position: absolute;
-  bottom: 20vh;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.qr-wrapper img {
-  width: 96px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow:
-    0 0 24px rgba(255,255,255,0.25),
-    0 0 60px rgba(42,250,223,0.35);
-  opacity: 0.95;
-}
-
-.qr-caption {
-  margin-top: 10px;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  color: rgba(235,240,250,0.9);
-  text-align: center;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.35);
-}
-
-/* Footer */
-footer {
-  position: absolute;
-  bottom: 12vh;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  color: rgba(235,240,250,0.85);
-  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-}
-
-/* Privacy Policy Button */
-.privacy-btn {
-  position: fixed;
-  bottom: 18px;
-  right: 120px; /* Adjusted to not overlap Buy Me a Coffee */
-  background: rgba(255,255,255,0.15);
-  color: var(--text);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  padding: 8px 12px;
+  height: 32px;
   border-radius: 8px;
-  text-decoration: none;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  backdrop-filter: blur(6px);
-  transition: background 0.3s ease, transform 0.2s ease;
-  z-index: 3;
+  object-fit: cover;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.45),
+    0 0 18px rgba(160,200,255,0.25);
 }
 
-.privacy-btn:hover {
-  background: rgba(255,255,255,0.3);
-  transform: translateY(-2px);
+
+/* Align header icon and text perfectly */
+.brandline{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+.brand-main,
+.brand-sub{
+  line-height: 1;
+}
+
+.brand-icon{
+  display: block;
+}
+
 </style>
-</head>
 
-<body>
-<div class="bg-veil"></div>
+  </head>
 
-<div class="container" id="container">
-  <div class="drop-wrapper" id="drop">
-    <svg class="drop-glow" viewBox="0 0 72 96">
-      <defs>
-        <radialGradient id="dropGrad" cx="50%" cy="35%" r="80%">
-          <stop offset="0%" stop-color="rgba(255,255,255,0.98)" />
-          <stop offset="100%" stop-color="rgba(255,255,255,0.5)" />
-        </radialGradient>
-      </defs>
-      <path d="M36 0 C36 0 66 36 66 56 C66 78 52 96 36 96 C20 96 6 78 6 56 C6 36 36 0 36 0 Z"
-            fill="url(#dropGrad)" />
-    </svg>
-  </div>
+  <body>
+    <!-- Fixed Header -->
+    <header>
+      <div class="header-inner">
+        <div class="brandline" aria-label="AuraDrop for LinkedIn">
+          <img src="https://raw.githubusercontent.com/auradrain/auradrop/main/icon.png" alt="AuraDrop logo" class="brand-icon"/>
+          <span class="brand-main">AuraDrop</span>
+          <span class="brand-sub">for LinkedIn</span>
+        </div>
 
-  <div class="ripples" id="ripples">
-    <span class="ripple r1"></span>
-    <span class="ripple r2"></span>
-    <span class="ripple r3"></span>
-  </div>
+        <div class="header-actions">
+          <a class="btn bmc" href="https://buymeacoffee.com/auradrop" target="_blank" rel="noopener noreferrer">
+            buy me a coffee ☕️
+          </a>
+        </div>
+      </div>
+    </header>
 
-  <h1>AURADROP</h1>
-  <div id="tagline" class="tagline">Drop the aura. Restore the vibe.</div>
-</div>
+    <main>
+      <div class="container">
+        <!-- Rotating text (no box) -->
+        <section class="rotator" aria-label="AuraDrop rotating tagline">
+          <span id="rotatingLine" class="line"></span>
+        </section>
 
-<!-- QR Code -->
-<div class="qr-wrapper">
-  <img src="qr-code.png" alt="AuraDrop QR code">
-  <div class="qr-caption">support the vision ☕ </div>
-</div>
+        <!-- Two columns -->
+        <section class="grid">
+          <!-- Left panel -->
+          <div class="panel">
+            <div class="panel-inner">
+              <p class="hero-title">AURADROP</p>
+              <h1 class="headline">Drop the aura. Restore the vibe.</h1>
+              <p class="desc">
+                <strong>LinkedIn has an aura problem.</strong> <br>
+                Same recycled “lessons.” Same AI-washed takes. Same “didn’t expect this to blow up” energy.<br>
+              </p>
+              <p class="desc">
+                AuraDrop spices up your feed by playfully tagging posts to capture their essence — so you know what’s legit,
+                what’s clout, and what’s just noise.
+              </p>
+              <p class="note">Not moderation. Not fact-checking. Just vibes ✨</p>
 
-<footer>✨ dropping soon ✨</footer>
+              <div class="divider"></div>
 
-<!-- Privacy Policy Button -->
-<a href="privacy-policy.html" class="privacy-btn" target="_blank">Privacy Policy</a>
+              <div class="install">
+                <p>
+                  Install the AuraDrop Tampermonkey script, then head to <a href="https://www.linkedin.com" target="_blank"><b><u>www.linkedin.com</u></b></a> to drop the aura and restore the vibe.
+                </p>
 
-<!-- Buy Me a Coffee Widget (bottom right) -->
-<script
-  data-name="BMC-Widget"
-  data-cfasync="false"
-  src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
-  data-id="auradrop"
-  data-description="Support me on Buy me a coffee!"
-  data-message=""
-  data-color="#26B0A1"
-  data-position="Right"
-  data-x_margin="18"
-  data-y_margin="18">
-</script>
+                <div class="install-actions" style="flex-direction: column; align-items: flex-start;">
+                  <a
+                    class="btn install-btn"
+                    href="https://raw.githubusercontent.com/auradrain/auradrop/main/auradrop.user.js"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    One Click Install
+                  </a>
 
-<script>
-/* TAGLINES */
-const taglines = [
-  "Drop the aura. Restore the vibe.",
-  "Some posts didn’t pass the clout check.",
-  "Where vibes get verified.",
-  "Not everything that trends is real.",
-  "Less clout. More credibility.",
-  "Because your feed deserves better.",
-  "Aura dropped. Truth delivered.",
-  "We read the room so you don’t have to.",
-  "Not all engagement is earned.",
-  "Clout detected. Aura rejected.",
-  "Serving truth, not hype."
-];
+                  <span class="small-muted">Requires Tampermonkey (Chrome / Edge / Brave)</span>
+<span class="small-muted">
+  Don’t have Tampermonkey? 
+  <a href="https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en"
+     target="_blank" rel="noopener noreferrer"
+     style="text-decoration: underline;">
+    Download from the Chrome Web Store
+  </a>
+</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-let taglineIndex = 0;
-const taglineEl = document.getElementById("tagline");
+          <!-- Right panel: auto-scrolling mock feed -->
+          <div class="panel">
+            <div class="feed-header">
+              <div>
+                <div class="title">LinkedIn with AuraDrop</div>
+                <div class="sub">Hover Tags for Tooltips</div>
+              </div>
+              <a class="btn secondary" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">linkedin.com</a>
+            </div>
 
-function cycleTagline() {
-  taglineEl.style.opacity = "0";
-  setTimeout(() => {
-    taglineIndex = (taglineIndex + 1) % taglines.length;
-    taglineEl.textContent = taglines[taglineIndex];
-    taglineEl.offsetHeight;
-    taglineEl.style.opacity = "1";
-  }, 450);
-}
+            <div class="feed-viewport" aria-label="Mock LinkedIn posts">
+              <div class="feed-track" id="feedTrack">
+                <!-- Group A -->
+                <article class="post">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop1" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Jordan Reed</p>
+                        <span class="meta">2h • 🌎</span>
+                      </div>
 
-setInterval(cycleTagline, 4200);
+                      <div class="tag-row">
+                        <div class="tag">
+                          Real Talk
+                          <div class="tooltip">Human, honest, no hustle-y “lessons learned” energy.</div>
+                        </div>
+                      </div>
 
-/* DROP + RIPPLE */
-const drop = document.getElementById("drop");
-const ripples = document.getElementById("ripples");
-const container = document.getElementById("container");
+                      <p class="content">
+                        I hit a wall last year. The fix wasn’t a new system — it was sleeping, asking for help, and making work smaller again.
+                      </p>
 
-function animateDrop() {
-  drop.style.transition = "none";
-  drop.style.transform = "translate(-50%, -90px)";
-  drop.style.opacity = "1";
-  drop.offsetHeight;
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            2,184
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            312
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            41
+                          </span>
+                        </div>
 
-  drop.style.transition =
-    "transform 1.35s cubic-bezier(.25,.6,.35,1), opacity 0.3s ease";
-  drop.style.transform = "translate(-50%, 150px)";
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
 
-  setTimeout(() => {
-    const dropRect = drop.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-    ripples.style.top = `${dropRect.bottom - containerRect.top}px`;
-    ripples.style.opacity = 1;
+                <article class="post">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop2" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Maya Chen</p>
+                        <span class="meta">6h • 🎯</span>
+                      </div>
 
-    ripples.querySelectorAll(".ripple").forEach(r => {
-      r.style.animation = "none";
-      r.offsetHeight;
-      r.style.animation =
-        r.classList.contains("r1") ? "rippleWave 4s ease-out forwards" :
-        r.classList.contains("r2") ? "rippleWave 4s ease-out forwards 0.22s" :
-        "rippleWave 4s ease-out forwards 0.44s";
-    });
-  }, 1050);
+                      <div class="tag-row">
+                        <div class="tag">
+                          Humble Brag
+                          <div class="tooltip">“So grateful” but the LinkedIn trophy stays in frame.</div>
+                        </div>
+                      </div>
 
-  setTimeout(() => { drop.style.opacity = "0"; }, 1350);
-  setTimeout(() => {
-    ripples.style.opacity = 0;
-    requestAnimationFrame(animateDrop);
-  }, 4000);
-}
+                      <p class="content">
+                        Still surreal to share this — my team’s launch got featured in a major newsletter. Proud of what we shipped (and yes, I cried).
+                      </p>
 
-requestAnimationFrame(animateDrop);
-</script>
-</body>
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            6,940
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            1,102
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            220
+                          </span>
+                        </div>
+
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="post">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop3" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Alex Morgan</p>
+                        <span class="meta">1d • ✨</span>
+                      </div>
+
+                      <div class="tag-row">
+                        <div class="tag">
+                          Word Salad
+                          <div class="tooltip">So many buzzwords the sentence started sweating.</div>
+                        </div>
+                      </div>
+
+                      <p class="content">
+                        Excited to operationalize scalable alignment across synergistic stakeholders while accelerating end-to-end value creation in Q1.
+                      </p>
+
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            1,321
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            98
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            12
+                          </span>
+                        </div>
+
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="post">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop4" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Chris Alvarez</p>
+                        <span class="meta">3d • 🔥</span>
+                      </div>
+
+                      <div class="tag-row">
+                        <div class="tag">
+                          Clout Chaser
+                          <div class="tooltip">A hot take engineered for comments, not reality.</div>
+                        </div>
+                      </div>
+
+                      <p class="content">
+                        Hot take: if you’re not “building in public” you’re falling behind. Agree or disagree — I’m curious 👇
+                      </p>
+
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            18,004
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            4,208
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            1,003
+                          </span>
+                        </div>
+
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="post">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop5" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Taylor Brooks</p>
+                        <span class="meta">1w • 📸</span>
+                      </div>
+
+                      <div class="tag-row">
+                        <div class="tag">
+                          Influencer Lite
+                          <div class="tooltip">Soft-launching a personal brand with gentle “content creator” energy.</div>
+                        </div>
+                      </div>
+
+                      <p class="content">
+                        Starting a series: “5 career glow-up habits” (part 1/10). Save this for later — I’ll drop a template in the comments.
+                      </p>
+
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            9,511
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            802
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            147
+                          </span>
+                        </div>
+
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Group B (duplicate for seamless scroll) -->
+                <article class="post" aria-hidden="true">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop6" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Jordan Reed</p>
+                        <span class="meta">2h • 🌎</span>
+                      </div>
+                      <div class="tag-row">
+                        <div class="tag">
+                          Real Talk
+                          <div class="tooltip">Human, honest, no hustle-y “lessons learned” energy.</div>
+                        </div>
+                      </div>
+                      <p class="content">
+                        I hit a wall last year. The fix wasn’t a new system — it was sleeping, asking for help, and making work smaller again.
+                      </p>
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            2,184
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            312
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            41
+                          </span>
+                        </div>
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="post" aria-hidden="true">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop7" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Maya Chen</p>
+                        <span class="meta">6h • 🎯</span>
+                      </div>
+                      <div class="tag-row">
+                        <div class="tag">
+                          Humble Brag
+                          <div class="tooltip">“So grateful” but the LinkedIn trophy stays in frame.</div>
+                        </div>
+                      </div>
+                      <p class="content">
+                        Still surreal to share this — my team’s launch got featured in a major newsletter. Proud of what we shipped (and yes, I cried).
+                      </p>
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            6,940
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            1,102
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            220
+                          </span>
+                        </div>
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="post" aria-hidden="true">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop8" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Alex Morgan</p>
+                        <span class="meta">1d • ✨</span>
+                      </div>
+                      <div class="tag-row">
+                        <div class="tag">
+                          Word Salad
+                          <div class="tooltip">So many buzzwords the sentence started sweating.</div>
+                        </div>
+                      </div>
+                      <p class="content">
+                        Excited to operationalize scalable alignment across synergistic stakeholders while accelerating end-to-end value creation in Q1.
+                      </p>
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            1,321
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            98
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            12
+                          </span>
+                        </div>
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="post" aria-hidden="true">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop9" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Chris Alvarez</p>
+                        <span class="meta">3d • 🔥</span>
+                      </div>
+                      <div class="tag-row">
+                        <div class="tag">
+                          Clout Chaser
+                          <div class="tooltip">A hot take engineered for comments, not reality.</div>
+                        </div>
+                      </div>
+                      <p class="content">
+                        Hot take: if you’re not “building in public” you’re falling behind. Agree or disagree — I’m curious 👇
+                      </p>
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            18,004
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            4,208
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            1,003
+                          </span>
+                        </div>
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="post" aria-hidden="true">
+                  <div class="post-top">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=auradrop10" alt="Profile avatar"/>
+                    <div class="post-body">
+                      <div class="name-row">
+                        <p class="name">Taylor Brooks</p>
+                        <span class="meta">1w • 📸</span>
+                      </div>
+                      <div class="tag-row">
+                        <div class="tag">
+                          Influencer Lite
+                          <div class="tooltip">Soft-launching a personal brand with gentle “content creator” energy.</div>
+                        </div>
+                      </div>
+                      <p class="content">
+                        Starting a series: “5 career glow-up habits” (part 1/10). Save this for later — I’ll drop a template in the comments.
+                      </p>
+                      <div class="engagement">
+                        <div class="counts">
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            9,511
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            802
+                          </span>
+                          <span class="count-chip">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 17l10-10M7 7h10v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                            147
+                          </span>
+                        </div>
+                        <div class="actions">
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M9 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-6l1-4a2 2 0 0 0-2-2l-5 8v9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Like
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 5h16v10H7l-3 3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                            </svg>
+                            Comment
+                          </span>
+                          <span class="action">
+                            <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M7 7h10v10H7V7z" stroke="currentColor" stroke-width="1.6"/>
+                              <path d="M7 12h10" stroke="currentColor" stroke-width="1.6"/>
+                            </svg>
+                            Repost
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Fixed Footer -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-left">
+          Disclaimer: AuraDrop is a for-fun project and has no official affiliation with LinkedIn<br/>
+          Got thoughts? Hot takes? Mild beef? Email us at <a href="mailto:auradroplive@gmail.com" style="text-decoration:underline;">auradroplive@gmail.com</a>
+        </div>
+        <div class="footer-right">
+          <a class="btn privacy" href="https://auradrop.live/privacy-policy" target="_blank" rel="noopener noreferrer">
+            Privacy Policy
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bottom-right BuyMeACoffee badge -->
+    <script
+      data-name="BMC-Widget"
+      data-cfasync="false"
+      src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+      data-id="auradrop"
+      data-description="Support me on Buy me a coffee!"
+      data-message=""
+      data-color="#40DCA5"
+      data-position="Right"
+      data-x_margin="18"
+      data-y_margin="18"
+    ></script>
+
+    <script>
+      const lines = [
+        "Some posts didn’t pass the clout check.",
+        "Where vibes get verified.",
+        "Not everything that trends is real.",
+        "Less clout. More credibility.",
+        "Because your feed deserves better.",
+        "Aura dropped. Truth delivered.",
+        "We read the room so you don’t have to.",
+        "Not all engagement is earned.",
+        "Clout detected. Aura rejected.",
+        "Serving truth, not hype.",
+      ];
+
+      const el = document.getElementById("rotatingLine");
+      let idx = 0;
+
+      function swap(text) {
+        el.classList.remove("show");
+        window.setTimeout(() => {
+          el.textContent = text;
+          el.classList.add("show");
+        }, 320);
+      }
+
+      el.textContent = lines[idx];
+      requestAnimationFrame(() => el.classList.add("show"));
+
+      window.setInterval(() => {
+        idx = (idx + 1) % lines.length;
+        swap(lines[idx]);
+      }, 2800);
+    </script>
+  </body>
 </html>
