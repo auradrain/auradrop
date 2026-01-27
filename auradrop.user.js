@@ -1,8 +1,10 @@
 // ==UserScript==
-// @name         AuraDrop — Rainbow Label + Tooltip (TM)
+// @name         AuraDrop (TM)
 // @namespace    http://tampermonkey.net/
 // @version      1.0.0
-// @description  Inject AuraDrop rainbow label into LinkedIn feed posts (first line) with tooltip; skip comments; SPA-safe. Fix: consistent placement in post text and prevent avatar shift.
+// @downloadURL https://raw.githubusercontent.com/auradrain/auradrop/main/auradrop.user.js
+// @updateURL   https://raw.githubusercontent.com/auradrain/auradrop/main/auradrop.user.js
+// @description  Drop the Aura, restore the vibe
 // @match        https://www.linkedin.com/*
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
