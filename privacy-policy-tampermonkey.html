@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AuraDrop Privacy Policy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Darker, more muted aurora gradient */
+  --bg-gradient: linear-gradient(
+    120deg,
+    #8a7080,  /* soft muted mauve */
+    #6b5f91,  /* muted purple-gray */
+    #3d8c8f,  /* muted teal */
+    #357780,  /* darker soft teal */
+    #a69865   /* muted gold */
+  );
+  --text-color: #eef1f6;
+  --muted-color: rgba(230,235,245,0.9);
+  --card-bg: rgba(0,0,0,0.4);
+}
+
+/* Keyframes for smooth aurora animation */
+@keyframes auraShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-color);
+  background: var(--bg-gradient);
+  background-size: 600% 600%;
+  animation: auraShift 30s ease infinite; /* slower for softer feel */
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 800px;
+  background: var(--card-bg);
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--muted-color);
+}
+
+p, li {
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+ul {
+  margin-left: 1.2rem;
+}
+
+a {
+  color: #26d9e6;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #f0d373;
+}
+
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--muted-color);
+}
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>AuraDrop Privacy Policy</h1>
+
+    <p>AuraDrop is a Tampermonkey script that adds playful context labels to publicly visible LinkedIn feed posts.</p>
+
+    <h2>Data Collection</h2>
+    <ul>
+      <li>AuraDrop only reads text from publicly visible posts in your LinkedIn feed.</li>
+      <li>No private messages, profile data, or personal identifiers are collected.</li>
+      <li>No personally identifiable information (PII), health, financial, authentication, location, or browsing data is collected.</li>
+    </ul>
+
+    <h2>Data Usage</h2>
+    <ul>
+      <li>Text is sent to a remote service to generate a context label and brief explanation.</li>
+      <li>The remote service does not store or reuse your post text.</li>
+      <li>Labels are cached locally in your browser for efficiency; the cache stores only a hash and the label, not the original post.</li>
+    </ul>
+
+    <h2>Permissions</h2>
+    <ul>
+      <li><strong>Storage:</strong> used for local caching only.</li>
+      <li><strong>Host permissions:</strong> used to read publicly visible LinkedIn posts and communicate with the backend service.</li>
+    </ul>
+
+    <h2>No Advertising, Tracking, or Sharing</h2>
+    <p>AuraDrop does not track your activity, show ads, or share data with third parties.</p>
+
+    <h2>Contact</h2>
+    <p>For questions, contact: <a href="mailto:auradroplive@gmail.com">auradroplive@gmail.com</a></p>
+  </div>
+</body>
+</html>
