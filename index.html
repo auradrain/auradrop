@@ -724,6 +724,27 @@
         display: block;
       }
 
+      /* iOS-only visual correction */
+      @supports (-webkit-touch-callout: none) {
+
+        /* Darken overall background to match desktop */
+        body::after {
+          content: "";
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          z-index: -1;
+
+          /* Tuned to visually match desktop Safari / Chrome */
+          background: rgba(8, 12, 24, 0.38);
+        }
+
+        /* Reduce aurora lift caused by iOS blur math */
+        body::before {
+          filter: blur(28px) saturate(1.45) brightness(0.90);
+        }
+      }
+
       </style>
 
   </head>
