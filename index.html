@@ -17,9 +17,9 @@
       :root {
         /* Base colors */
         --bg: rgba(24, 30, 46, 0.9);
-        --panel: rgba(128, 128, 128, 0.1);
+        --panel: rgba(255, 255, 255, 0.07);
 
-        --text: #ffffff;          /* white text */
+        --text: rgba(255, 255, 255, 0.92);
         --muted: rgba(255, 255, 255, 0.72);
         --muted-2: rgba(255, 255, 255, 0.58);
         --muted-3: rgba(255, 255, 255, 0.46);
@@ -43,11 +43,12 @@
       body {
         margin: 0;
         font-family: "Funnel Sans", system-ui, sans-serif;
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.25);
-        background: linear-gradient(to bottom, #47577d, #374a66); 
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+        background: linear-gradient(to bottom, #4f63a3, #3a4f7a);
         overflow-x: hidden;
         position: relative;
+        min-height: 100dvh;
       }
 
       body::before {
@@ -64,13 +65,14 @@
           radial-gradient(680px 520px at 15% 75%, rgba(90, 200, 170, 0.35), transparent 62%), /* soft teal */
           radial-gradient(700px 500px at 50% 50%, rgba(245, 200, 135, 0.33), transparent 60%); /* soft gold */
 
-        filter: blur(28px) saturate(1.4) brightness(1.08); /* slightly reduced saturation & brightness */
+        filter: blur(28px) saturate(1.55) brightness(1.12);
         opacity: 0.95;
 
         transform: translate3d(0,0,0) scale(1.05);
         animation:
           auroraDrift 28s ease-in-out infinite alternate,
           auroraHue 36s linear infinite;
+        will-change: transform, filter;
       }
 
       @keyframes auroraDrift {
@@ -161,13 +163,13 @@
       .btn:active { transform: translateY(0px) scale(0.99); }
 
       .btn.secondary {
-        background: rgba(255, 255, 255, 0.07);
+        background: rgba(255, 255, 255, 0.08);
         border: 1px solid var(--border);
         color: var(--text);
         box-shadow: none;
       }
 
-      .btn.secondary:hover { background: rgba(255, 255, 255, 0.09); }
+      .btn.secondary:hover { background: rgba(255, 255, 255, 0.14); }
 
       /* Header BMC: cursive */
       .btn.bmc {
@@ -234,6 +236,7 @@
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow);
         overflow: hidden;
+        backdrop-filter: blur(14px) saturate(1.1);
       }
 
       .panel-inner { padding: 20px; }
@@ -243,9 +246,9 @@
          ========================= */
       .hero-title {
         font-size: 14px;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.22em;
         font-weight: 900;
-        color: rgba(255, 255, 255, 0.62);
+        color: rgba(200,220,255,0.75);
         margin: 0 0 10px;
       }
 
@@ -384,10 +387,17 @@
 
       .post {
         border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(255, 255, 255, 0.075);
         border-radius: var(--radius-lg);
         padding: 14px;
         box-shadow: var(--shadow-soft);
+      }
+
+      .post:hover {
+        transform: translateY(-1px);
+        box-shadow:
+          0 14px 30px rgba(0,0,0,0.35),
+          0 0 22px rgba(120,180,255,0.18);
       }
 
       .post-top {
@@ -444,20 +454,21 @@
         letter-spacing: 0.15px;
         overflow: visible; /* prevent tooltip clipping */
 
-        color: rgba(255, 255, 255, 0.92);
+        color: rgba(255, 255, 255, 0.98);
         background: linear-gradient(
           90deg,
-          rgba(255, 107, 107, 0.28),
-          rgba(255, 217, 61, 0.22),
-          rgba(107, 255, 179, 0.20),
-          rgba(107, 215, 255, 0.22),
-          rgba(179, 107, 255, 0.24)
+          rgba(255, 95, 95, 0.55),   /* red */
+          rgba(255, 215, 70, 0.50),  /* yellow */
+          rgba(90, 245, 170, 0.48),  /* green */
+          rgba(90, 210, 255, 0.50),  /* blue */
+          rgba(175, 110, 255, 0.52)  /* violet */
         );
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.22);
         box-shadow:
-          0 10px 18px rgba(0, 0, 0, 0.30),
-          0 0 18px rgba(179, 107, 255, 0.10);
-        backdrop-filter: blur(8px);
+          0 10px 18px rgba(0, 0, 0, 0.26),
+          0 0 26px rgba(140, 190, 255, 0.28),
+          0 0 14px rgba(255, 215, 70, 0.20);
+        backdrop-filter: blur(10px) saturate(1.25);
         cursor: default;
         user-select: none;
         white-space: nowrap;
