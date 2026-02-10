@@ -45,7 +45,11 @@
         font-family: "Funnel Sans", system-ui, sans-serif;
         color: rgba(255, 255, 255, 0.85);
         text-shadow: 0 1px 2px rgba(0,0,0,0.18);
-        background: linear-gradient(to bottom, #4f63a3, #3a4f7a);
+        background: linear-gradient(
+          to bottom,
+          #5c76d8,   /* electric indigo-blue */
+          #2f3f78    /* deep sapphire */
+        );
         overflow-x: hidden;
         position: relative;
         min-height: 100dvh;
@@ -59,13 +63,14 @@
         pointer-events: none;
 
         background:
-          radial-gradient(900px 520px at 25% 25%, rgba(120, 195, 220, 0.40), transparent 62%),  /* soft cyan */
-          radial-gradient(700px 500px at 75% 30%, rgba(170, 130, 230, 0.38), transparent 64%), /* soft lilac */
-          radial-gradient(850px 560px at 55% 80%, rgba(245, 155, 190, 0.36), transparent 66%), /* soft pink */
-          radial-gradient(680px 520px at 15% 75%, rgba(90, 200, 170, 0.35), transparent 62%), /* soft teal */
-          radial-gradient(700px 500px at 50% 50%, rgba(245, 200, 135, 0.33), transparent 60%); /* soft gold */
+          radial-gradient(900px 520px at 25% 25%, rgba(80, 210, 255, 0.55), transparent 60%),  /* vivid cyan */
+          radial-gradient(700px 500px at 75% 30%, rgba(190, 135, 255, 0.52), transparent 62%), /* neon lilac */
+          radial-gradient(850px 560px at 55% 80%, rgba(255, 135, 190, 0.50), transparent 64%), /* hot pink */
+          radial-gradient(680px 520px at 15% 75%, rgba(60, 230, 190, 0.48), transparent 60%),  /* bright teal */
+          radial-gradient(700px 500px at 50% 50%, rgba(255, 210, 120, 0.46), transparent 58%); /* glowing gold */
 
-        filter: blur(28px) saturate(1.55) brightness(1.12);
+
+        filter: blur(28px) saturate(1.85) brightness(1.18);
         opacity: 0.95;
 
         transform: translate3d(0,0,0) scale(1.05);
@@ -82,8 +87,8 @@
       }
 
       @keyframes auroraHue {
-        0% { filter: blur(28px) saturate(1.4) brightness(1.08) hue-rotate(0deg); }
-        100% { filter: blur(28px) saturate(1.4) brightness(1.08) hue-rotate(360deg); }
+        0%   { filter: blur(28px) saturate(1.7) brightness(1.15) hue-rotate(0deg); }
+        100% { filter: blur(28px) saturate(1.7) brightness(1.15) hue-rotate(360deg); }
       }
 
       /* Links */
@@ -289,8 +294,23 @@
       .install p {
         margin: 0;
         color: var(--muted);
-        font-size: 14px;
+        font-size: 16px;
         line-height: 1.55;
+      }
+
+      .install p.highlight {
+        background: linear-gradient(
+          90deg,
+          #ff6b6b,
+          #ffd23d,
+          #5cffb3,
+          #5fd7ff,
+          #b56bff
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 700;
       }
 
       .install-actions {
@@ -457,18 +477,18 @@
         color: rgba(255, 255, 255, 0.98);
         background: linear-gradient(
           90deg,
-          rgba(255, 95, 95, 0.55),   /* red */
-          rgba(255, 215, 70, 0.50),  /* yellow */
-          rgba(90, 245, 170, 0.48),  /* green */
-          rgba(90, 210, 255, 0.50),  /* blue */
-          rgba(175, 110, 255, 0.52)  /* violet */
+          rgba(255, 80, 80, 0.70),
+          rgba(255, 210, 70, 0.66),
+          rgba(80, 255, 185, 0.64),
+          rgba(90, 220, 255, 0.66),
+          rgba(190, 120, 255, 0.68)
         );
         border: 1px solid rgba(255, 255, 255, 0.22);
         box-shadow:
           0 10px 18px rgba(0, 0, 0, 0.26),
           0 0 26px rgba(140, 190, 255, 0.28),
           0 0 14px rgba(255, 215, 70, 0.20);
-        backdrop-filter: blur(10px) saturate(1.25);
+        backdrop-filter: blur(10px) saturate(1.45);
         cursor: default;
         user-select: none;
         white-space: nowrap;
@@ -804,8 +824,11 @@
               <div class="divider"></div>
 
               <div class="install">
+                <p class ="highlight">
+                  🚀 AuraDrop is now live on the <strong> official Google Chrome Web Store</strong>!  
+                </p>
                 <p>
-                  Install the AuraDrop Chrome extension, then head to <a href="https://www.linkedin.com" target="_blank"><b><u>www.linkedin.com</u></b></a> (desktop only) to see it in action!
+                  Install it, then head to <a href="https://www.linkedin.com" target="_blank"><b><u>www.linkedin.com</u></b></a> (desktop only) to see it in action!
                 </p>
 
                 <div class="install-actions" style="flex-direction: column; align-items: flex-start;">
