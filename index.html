@@ -183,6 +183,77 @@
         letter-spacing: 0.1px;
       }
 
+      /* Premium Glass X Button */
+      .x-link {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+
+        backdrop-filter: blur(14px) saturate(1.2);
+        -webkit-backdrop-filter: blur(14px) saturate(1.2);
+
+        box-shadow:
+          0 8px 24px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+        color: rgba(255, 255, 255, 0.9);
+
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          background 180ms ease;
+      }
+
+      /* X icon size */
+      .x-link svg {
+        width: 17px;
+        height: 17px;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Subtle glass sheen */
+      .x-link::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+
+        background: linear-gradient(
+          120deg,
+          rgba(255,255,255,0.35) 0%,
+          rgba(255,255,255,0.08) 40%,
+          rgba(255,255,255,0.0) 60%
+        );
+
+        opacity: 0.6;
+        transition: opacity 180ms ease;
+      }
+
+      /* Hover */
+      .x-link:hover {
+        transform: translateY(-2px);
+
+        background: rgba(255, 255, 255, 0.14);
+
+        box-shadow:
+          0 16px 34px rgba(0, 0, 0, 0.45),
+          0 0 26px rgba(140, 190, 255, 0.28),
+          inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      }
+
+      .x-link:hover::before {
+        opacity: 0.85;
+      }
+
       /* =========================
          Layout
          ========================= */
@@ -830,6 +901,17 @@
           <a class="btn bmc" href="https://buymeacoffee.com/auradrop" target="_blank" rel="noopener noreferrer">
             <span class="original">buy me a coffee ☕️</span>
           </a>
+
+          <a class="x-link"
+           href="https://x.com/AuraDropLive"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Follow AuraDrop on X">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor"
+              d="M18.244 2H21.5l-7.29 8.33L22.5 22h-6.59l-5.16-6.76L4.5 22H1.244l7.8-8.92L1 2h6.74l4.66 6.17L18.244 2z"/>
+          </svg>
+        </a>
         </div>
       </div>
     </header>
